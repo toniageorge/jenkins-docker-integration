@@ -10,4 +10,8 @@ public class JenkinsDockerIntegrationApplication {
 		SpringApplication.run(JenkinsDockerIntegrationApplication.class, args);
 	}
 
+
+	public void send(){
+		String s = "123";
+	}
 }
