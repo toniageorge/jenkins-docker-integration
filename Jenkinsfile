@@ -1,5 +1,9 @@
 pipeline{
     agent any
+    environment {
+        KUBECONFIG = credentials('K8sconfig')
+        DOCKPWD =  credentials('Docker_password_jenkins')
+    }
     tools{
         maven 'maven-3.9.6'
     }
@@ -20,9 +24,15 @@ pipeline{
         stage('deploy docker image to docker hub'){
             steps{
                 script{
-                    withCredentials([string(credentialsId: 'DockPwd', variable: 'dockPwd')]) {
-                    bat 'docker login -u toniageorge -p ${dockPwd}'
-                  }
+                    bat 'docker login -u toniageorge -p {}'
+
+                }
+            }
+        }
+        stage('deploy to kubectl'){
+            steps{
+                script{
+                    bat "kubectl apply --kubeconfig=${KUBECONFIG} -f deploymentservice.yaml"
                 }
             }
         }
